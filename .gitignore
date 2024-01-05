@@ -1,0 +1,5 @@
+/node_modules/
+/.idea/.gitignore
+/.idea/face-recognition-brain-server.iml
+/.idea/modules.xml
+/.idea/php.xml
