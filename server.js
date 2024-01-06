@@ -49,15 +49,17 @@ app.get('/profile/:id', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-    let properties = ['name', 'email', 'password'];
+    const properties = ['name', 'email', 'password'];
+    const { email, name, password } = req.body;
+
     if (req.body && properties.every(propName => req.body[propName] !== null && req.body[propName] !== undefined)) {
         let lastId = database.users[database.users.length-1].id;
         let lastNewId = Number(lastId) + 1;
         database.users.push({
             "id": lastNewId.toString(),
-            "name": req.body.name,
-            "email": req.body.email,
-            "password": req.body.password,
+            "name": name,
+            "email":email,
+            "password": password,
             "entries": 0,
             "joined": new Date()
         });
