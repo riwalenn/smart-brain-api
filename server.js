@@ -77,7 +77,7 @@ app.post('/login', (req, res) => {
     database.users.forEach(user => {
         if (user.email === req.body.email && req.body.password === user.password) {
             found = true;
-            return res.json('success');
+            return res.json(user);
         }
     });
 
