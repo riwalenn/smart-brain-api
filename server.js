@@ -1,9 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
+const cors = require('cors');
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 const database = {
   users: [
@@ -27,7 +29,7 @@ const database = {
 };
 
 app.get('/', (req, res) => {
-   res.send('success');
+   res.send(database.users);
 });
 
 app.get('/users', (req, res) => {
@@ -70,12 +72,12 @@ app.post('/register', (req, res) => {
     }
 });
 
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
     let found = false;
     database.users.forEach(user => {
         if (user.email === req.body.email && req.body.password === user.password) {
             found = true;
-            return res.json(user);
+            return res.json('success');
         }
     });
 
