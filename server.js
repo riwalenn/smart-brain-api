@@ -95,7 +95,10 @@ app.post('/login', (req, res) => {
                res.status(400).json('Error with the credentials.')
            }
         })
-        .catch(err => res.status(400).json('error getting user.'));
+        .catch(err => {
+            console.error(err);
+            return res.status(400).json('error getting user.');
+        });
 });
 
 app.put('/image', (req, res) => {
