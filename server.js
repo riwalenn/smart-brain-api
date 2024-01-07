@@ -2,8 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
-const {compareSync} = require("bcrypt-nodejs");
-const e = require("express");
+const { compareSync } = require("bcrypt-nodejs");
 
 const db = knex({
     client: 'pg',
@@ -32,7 +31,10 @@ app.get('/profile/:id', (req, res) => {
                  res.status(404).json('Not found.')
              }
          })
-         .catch(err => res.status(404).json('error getting user.'));
+         .catch(err => {
+             console.error(err);
+             return res.status(404).json('error getting user.');
+         });
 });
 
 app.post('/register', (req, res) => {
@@ -64,7 +66,10 @@ app.post('/register', (req, res) => {
                 .then(trx.commit)
                 .catch(trx.rollback)
         })
-            .catch(err => res.status(400).json('Unabled to register.'));
+            .catch(err => {
+                console.error(err);
+                return res.status(400).json('Unabled to register.');
+            });
     } else {
        res.status(400).json('You need a name, email and password to register !');
     }
@@ -75,14 +80,17 @@ app.post('/login', (req, res) => {
         .from('login')
         .where('email', '=', req.body.email)
         .then(data => {
-           const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
+           const isValid = compareSync(req.body.password, data[0].hash);
            if (isValid) {
                return db.select('*').from('users')
                    .where('email', '=', req.body.email)
                    .then(user => {
                        res.json(user[0]);
                    })
-                   .catch( err => res.status(400).json('Error with the credentials.'));
+                   .catch( err => {
+                       console.error(err);
+                       return res.status(400).json('Error with the credentials.');
+                   });
            } else {
                res.status(400).json('Error with the credentials.')
            }
@@ -99,7 +107,10 @@ app.put('/image', (req, res) => {
         .then(entries => {
             res.json(entries[0].entries)
         })
-        .catch(err => res.status(400).json('unable to get entries'));
+        .catch(err => {
+            console.error(err);
+            return res.status(400).json('unable to get entries');
+        });
 });
 
 app.listen(3000, () => {
