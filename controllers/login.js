@@ -1,4 +1,4 @@
-const handleLogin = (req, res, db, compareSync) => {
+const handleLogin = (db, compareSync) => (req, res) => {
     db.select('*')
         .from('login')
         .where('email', '=', req.body.email)

@@ -24,13 +24,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/profile/:id', (req, res) => { profile.handleProfile(req, res, db) });
+app.get('/profile/:id', profile.handleProfile(db));
 
-app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) });
+app.post('/register', register.handleRegister(db, bcrypt));
 
-app.post('/login', (req, res) => login.handleLogin(req, res, db, compareSync));
+app.post('/login', login.handleLogin(db, compareSync));
 
-app.put('/image', (req, res) => { image.handleImage(req, res, db) });
+app.put('/image', image.handleImage(db));
 
 app.listen(3000, () => {
     console.log('app is fired!')
