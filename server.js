@@ -7,10 +7,10 @@ const { compareSync } = require("bcrypt-nodejs");
 const db = knex({
     client: 'pg',
     connection: {
-        host : '127.0.0.1',
-        user : 'postgres',
-        password : 'pwd',
-        database : 'smart-brain'
+        host : '127.0.0.1',         // your host
+        user : 'postgres',          // your user database login
+        password : 'pwd',           // your database password
+        database : 'smart-brain'    // your database name
     }
 });
 
@@ -89,10 +89,10 @@ app.post('/login', (req, res) => {
                    })
                    .catch( err => {
                        console.error(err);
-                       return res.status(400).json('Error with the credentials.');
+                       return res.status(401).json('Error with the credentials.');
                    });
            } else {
-               res.status(400).json('Error with the credentials.')
+               res.status(401).json('Error with the credentials.')
            }
         })
         .catch(err => {
@@ -112,7 +112,7 @@ app.put('/image', (req, res) => {
         })
         .catch(err => {
             console.error(err);
-            return res.status(400).json('unable to get entries');
+            return res.status(404).json('unable to get entries');
         });
 });
 
