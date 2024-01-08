@@ -1,4 +1,8 @@
 const handleLogin = (db, compareSync) => (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(401).json('Incorrect form submission.');
+    }
     db.select('*')
         .from('login')
         .where('email', '=', req.body.email)
