@@ -7,7 +7,7 @@ const { compareSync } = require("bcrypt-nodejs");
 const register = require('./controllers/register');
 const login = require('./controllers/login');
 const profile = require('./controllers/profile');
-const image = require('./controllers/image');
+const image = require('./controllers/image_'); //change image_ to image
 
 const db = knex({
     client: 'pg',
@@ -31,6 +31,8 @@ app.post('/register', register.handleRegister(db, bcrypt));
 app.post('/login', login.handleLogin(db, compareSync));
 
 app.put('/image', image.handleImage(db));
+
+app.post('/imageUrl', (req, res) => { image.handleApiCall(req, res)});
 
 app.listen(3000, () => {
     console.log('app is fired!')
